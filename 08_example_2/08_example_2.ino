@@ -34,8 +34,7 @@ void loop() {
 
   distance = USS_measure(PIN_TRIG, PIN_ECHO);
 
-  // 밝기 조절용 변수
-  int pwm_value = 255; // 기본적으로 LED 꺼짐
+  int pwm_value = 255;
 
   if ((distance == 0.0) || (distance > _DIST_MAX)) {
       distance = _DIST_MAX + 10.0;
@@ -44,20 +43,18 @@ void loop() {
       distance = _DIST_MIN - 10.0;
       pwm_value = 255; // LED OFF
   } else {
-      // 100mm ~ 300mm 사이일 때만 밝기 비례 계산
-      // 최대 밝기: 200mm일 때
-      // 최소 밝기: 100mm, 300mm일 때
+      
 
-      float diff = abs(distance - 200.0); // 기준 거리 200mm에서 얼마나 떨어졌는가
+      float diff = abs(distance - 200.0); 
       float brightness_ratio = diff / 100.0; // 0.0 (200mm) ~ 1.0 (100mm or 300mm)
-      brightness_ratio = constrain(brightness_ratio, 0.0, 1.0); // 예외 방지
+      brightness_ratio = constrain(brightness_ratio, 0.0, 1.0); 
 
-      pwm_value = int(255.0 * brightness_ratio); // 0~255 사이로 맵핑
+      pwm_value = int(255.0 * brightness_ratio);
   }
 
   analogWrite(PIN_LED, pwm_value);
 
-  // 디버깅 출력
+
   Serial.print("Distance: "); Serial.print(distance);
   Serial.print(" mm, PWM: "); Serial.println(pwm_value);
 
@@ -84,3 +81,4 @@ float USS_measure(int TRIG, int ECHO)
   //        = 100,000 * 0.001 * 0.5 * 346
   //        = 17,300 mm  ==> 17.3m
 }
+
